@@ -575,33 +575,38 @@
         /* Bottom Navigation (Mobile) */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            top: 0;
+            right: -300px; /* Start off-screen */
+            width: 300px;
+            height: 100vh;
             background: var(--gradient-primary);
             display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-direction: column;
+            padding: 80px 20px 20px 20px;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             z-index: 1000;
             backdrop-filter: blur(10px);
+            transition: right 0.3s ease-in-out;
+        }
+
+        .bottom-nav.open {
+            right: 0; /* Slide in from right */
         }
 
         .bottom-nav-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
             color: rgba(255, 255, 255, 0.8);
-            font-size: 12px;
+            font-size: 16px;
             text-decoration: none;
             transition: var(--transition);
-            padding: 10px 20px;
+            padding: 15px 20px;
             border-radius: var(--border-radius);
+            margin-bottom: 10px;
         }
 
         .bottom-nav-item:hover {
             color: white;
-            transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.15);
         }
 
@@ -615,12 +620,29 @@
         .bottom-nav-icon {
             width: 24px;
             height: 24px;
-            margin-bottom: 6px;
+            margin-right: 15px;
             transition: var(--transition);
         }
 
         .bottom-nav-item:hover .bottom-nav-icon {
             transform: scale(1.1);
+        }
+
+        /* Overlay for mobile menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(3px);
+        }
+
+        .menu-overlay.active {
+            display: block;
         }
 
         /* Animations */
@@ -2553,54 +2575,88 @@
     <script>
         const hamburgerMenu = document.querySelector('.hamburger-menu');
         const sidebar = document.querySelector('.sidebar');
+        const bottomNav = document.querySelector('.bottom-nav');
         const mainContent = document.querySelector('.main-content');
+        
+        // Create overlay element
+        const overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        document.body.appendChild(overlay);
 
+        // Update hamburger menu click handler
         hamburgerMenu.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
+            if (window.innerWidth <= 992) {
+                // On mobile, toggle bottom nav
+                bottomNav.classList.toggle('open');
+                overlay.classList.toggle('active');
+            } else {
+                // On desktop, toggle sidebar
+                sidebar.classList.toggle('open');
+            }
         });
 
-        // Optional: Close sidebar when clicking outside of it (on the main content)
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', () => {
+            bottomNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // Close menu when clicking outside
         mainContent.addEventListener('click', () => {
+            if (bottomNav.classList.contains('open')) {
+                bottomNav.classList.remove('open');
+                overlay.classList.remove('active');
+            }
             if (sidebar.classList.contains('open')) {
                 sidebar.classList.remove('open');
             }
         });
 
-        // Prevent clicks inside sidebar from closing it when clicking on mainContent
+        // Prevent clicks inside bottom nav from closing it
+        bottomNav.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+
+        // Prevent clicks inside sidebar from closing it
         sidebar.addEventListener('click', (event) => {
             event.stopPropagation();
         });
 
-        // Hide sidebar by default on page load on small screens
-        function hideSidebarOnLoad() {
+        // Hide menus by default on page load
+        function hideMenusOnLoad() {
+            bottomNav.classList.remove('open');
+            overlay.classList.remove('active');
             if (window.innerWidth <= 992) {
                 sidebar.classList.remove('open');
             }
         }
 
-        // Call hideSidebarOnLoad on page load
-        window.addEventListener('load', hideSidebarOnLoad);
+        // Call hideMenusOnLoad on page load
+        window.addEventListener('load', hideMenusOnLoad);
 
-        // Adjust sidebar visibility on window resize
+        // Adjust menu visibility on window resize
         window.addEventListener('resize', () => {
             if (window.innerWidth > 992) {
-                sidebar.classList.remove('open'); // Ensure sidebar is closed if resized from mobile
-                sidebar.style.left = '0'; // Ensure it's in correct position on large screens
-                sidebar.style.display = 'block'; // Ensure it's visible
-                mainContent.style.marginLeft = '250px'; // Adjust main content margin
+                // Desktop view
+                bottomNav.classList.remove('open');
+                overlay.classList.remove('active');
+                sidebar.style.left = '0';
+                sidebar.style.display = 'block';
+                mainContent.style.marginLeft = '250px';
             } else {
-                sidebar.style.left = '-250px'; // Hide sidebar on mobile
-                sidebar.style.display = 'none'; // Hide sidebar on mobile initially
-                mainContent.style.marginLeft = '0'; // No margin on mobile
+                // Mobile view
+                sidebar.style.left = '-250px';
+                sidebar.style.display = 'none';
+                mainContent.style.marginLeft = '0';
             }
         });
 
-        // Ensure sidebar is hidden on initial mobile load
+        // Ensure proper initial state on mobile
         document.addEventListener('DOMContentLoaded', () => {
             if (window.innerWidth <= 992) {
-                 sidebar.style.left = '-250px'; // Hide sidebar on mobile
-                 sidebar.style.display = 'none'; // Hide sidebar on mobile initially
-                 mainContent.style.marginLeft = '0'; // No margin on mobile
+                sidebar.style.left = '-250px';
+                sidebar.style.display = 'none';
+                mainContent.style.marginLeft = '0';
             }
         });
     </script>
