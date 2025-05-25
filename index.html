@@ -1,0 +1,2608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipkart Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Modern Color Scheme and Base Styles */
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #818cf8;
+            --accent-color: #f43f5e;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --success-color: #10b981;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+            --gradient-secondary: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
+            --dark-blue-primary: #0d47a1;
+            --dark-blue-secondary: #1976d2;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-primary);
+        }
+
+        /* Header/Navbar Styles */
+        .header {
+            background: var(--dark-blue-primary);
+            padding: 25px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px; /* Reduced navbar height */
+            gap: 30px; /* Increase gap between flex items */
+        }
+
+        /* Left Header Group - Now empty or can be removed if not needed for other elements */
+        .left-header-group {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Gap between search and cart */
+            /* This group will now be on the left implicitly */
+            order: 1; /* Ensure it stays on the left, though it might be empty */
+            margin-right: auto; /* Push subsequent items to the right */
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center; /* Center the text */
+            /* Removed order to rely on default flow and margin auto */
+            margin: 0 auto; /* Center the logo */
+            order: 2; /* Place logo second */
+        }
+
+        .logo {
+            color: white;
+            font-size: 60px; /* Even larger font size */
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo img {
+            height: 35px;
+            margin-right: 12px;
+        }
+
+        .logo .explore {
+            /* Removed specific styling to make it inherit white color */
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex-shrink: 0; /* Prevent search bar from shrinking */
+            width: 250px; /* Further reduced width */
+            position: relative;
+            order: 3; /* Place search bar third */
+            height: 50px; /* Set a fixed height */
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px 15px; /* Reduced padding */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 18px;
+        }
+
+        /* Cart Link Specific Styles */
+        .cart-link {
+            padding-right: 0;
+            flex-shrink: 0; /* Prevent cart from shrinking */
+            order: 4; /* Place cart fourth (after search bar and new button) */
+            padding: 8px 15px; /* Adjust padding for icon only */
+            gap: 5px; /* Adjust gap */
+            white-space: nowrap; /* Keep on one line */
+            color: white; /* Set icon color to white */
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-color);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px; /* Adjusted width for better mobile spacing */
+            background: linear-gradient(180deg, var(--dark-blue-primary) 0%, var(--dark-blue-secondary) 100%);
+            position: fixed;
+            top: 60px; /* Adjust top position to match new navbar height */
+            bottom: 0;
+            left: -250px; /* Hide sidebar off-screen by default */
+            box-shadow: var(--shadow-md);
+            overflow-y: auto;
+            z-index: 900;
+            display: none; /* Hidden by default on larger screens */
+            border-right: 1px solid rgba(0,0,0,0.1);
+            color: white; /* Ensure text is visible on dark background */
+            transition: left 0.3s ease-in-out; /* Add transition for smooth sliding */
+        }
+
+        .sidebar-header {
+            background: var(--dark-blue-primary);
+            color: white;
+            padding: 15px 20px; /* Adjust header padding */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 16px;
+        }
+
+        .sidebar-item {
+            padding: 15px 20px;
+            color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding-left: 25px;
+        }
+
+        .sidebar-item img {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+
+        .sidebar-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Hamburger Menu Styles */
+        .hamburger-menu {
+            display: none; /* Hidden by default on larger screens */
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            /* Position it on the left */
+            order: 1; /* Place it first in flex order */
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 10px;
+        }
+
+        /* Categories Section - Modern Design */
+        .categories {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); /* Light blue gradient */
+            border-radius: 30px;
+            padding: 40px;
+            margin: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .categories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .category-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: #1a1a1a; /* Dark text for light background */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+            text-shadow: none; /* Remove dark shadow */
+        }
+
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px; /* Adjust underline width */
+            height: 4px;
+            background: #1a1a1a; /* Dark underline */
+            border-radius: 2px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-card {
+            text-align: center;
+            padding: 35px 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid transparent; /* No border by default */
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 180, 216, 0.1) 100%);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Adjust shadow */
+            border: 1px solid rgba(0, 255, 136, 0.5); /* Subtle green border on hover */
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-img {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            transition: all 0.4s ease;
+            border-radius: 50%;
+            padding: 20px;
+            background: linear-gradient(135deg, #00ff88 0%, #00b4d8 100%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-card:hover .category-img {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, #00b4d8 0%, #00ff88 100%);
+        }
+
+        .category-name {
+            font-size: 20px;
+            color: #1a1a1a; /* Dark text */
+            font-weight: 600;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            text-shadow: none; /* Remove dark shadow */
+        }
+
+        .category-card:hover .category-name {
+            color: #01579b; /* Darker blue on hover */
+            transform: scale(1.05);
+        }
+
+        .category-count {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.1); /* Subtle background */
+            color: #1a1a1a; /* Dark text */
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease;
+        }
+
+        .category-card:hover .category-count {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-description {
+            font-size: 15px;
+            color: #4a4a4a; /* Darker gray text */
+            margin-top: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            line-height: 1.5;
+        }
+
+        .category-card:hover .category-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            color: #0277bd; /* Darker blue */
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.4s ease;
+            font-size: 24px;
+        }
+
+        .category-card:hover .category-icon {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Add glow effect on hover */
+        .category-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .category-card:hover::after {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Items Display Section */
+        .grocery-items-section {
+            display: none;
+            padding: 30px;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); /* Light blue gradient */
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            margin: 30px 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .grocery-items-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .grocery-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0 20px;
+        }
+
+        .grocery-section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a; /* Dark text */
+        }
+
+        .close-grocery-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #4a4a4a; /* Darker gray */
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-grocery-btn:hover {
+            color: var(--accent-color);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .grocery-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .grocery-item-card {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); /* Light blue gradient */
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Adjust shadow */
+            transition: var(--transition);
+            border: 1px solid transparent; /* No border by default */
+        }
+
+        .grocery-item-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.06); /* Adjust hover shadow */
+            border: 1px solid rgba(0, 150, 136, 0.4); /* Subtle teal border on hover */
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+
+        .grocery-item-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: var(--transition);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .grocery-item-card:hover .grocery-item-image {
+            transform: scale(1.05);
+        }
+
+        .grocery-item-details {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .grocery-item-name {
+            font-size: 16px;
+            font-weight: 600; /* Make text bolder */
+            color: #1a1a1a; /* Dark text */
+            margin-bottom: 12px;
+            height: 40px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .grocery-item-price {
+            font-size: 22px;
+            font-weight: 600;
+            color: #01579b; /* Darker blue for price */
+        }
+
+        .grocery-item-original-price {
+            font-size: 14px;
+            color: #4a4a4a; /* Darker gray */
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .grocery-item-discount {
+            font-size: 14px;
+            color: #388e3c; /* Keep discount text green */
+            margin-left: 8px;
+            font-weight: 500;
+            background: rgba(5, 150, 105, 0.15); /* Slightly stronger green background */
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        /* Bottom Navigation (Mobile) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--gradient-primary);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+        }
+
+        .bottom-nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .bottom-nav-item.active {
+            color: #fbbf24;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .bottom-nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 6px;
+            transition: var(--transition);
+        }
+
+        .bottom-nav-item:hover .bottom-nav-icon {
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 992px) {
+            .sidebar {
+                display: block;
+                left: 0; /* Ensure sidebar is visible on large screens */
+                width: 250px; /* Sidebar width on larger screens */
+            }
+            .main-content {
+                margin-left: 250px; /* Adjust main content margin */
+            }
+            .bottom-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-container {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .search-container {
+                max-width: 400px;
+            }
+
+            .nav-item {
+                padding: 8px 15px;
+            }
+
+            .nav-item span {
+                display: none;
+            }
+
+            .nav-item {
+                padding: 10px;
+            }
+
+            .cart-count {
+                top: -2px;
+                right: -2px;
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+            }
+
+            /* Show hamburger menu on smaller screens */
+            .hamburger-menu {
+                display: block; 
+            }
+
+            /* Adjust main content when sidebar is closed on mobile */
+            .main-content {
+                margin-left: 0; /* No margin when sidebar is closed */
+            }
+
+            /* Style for open sidebar */
+            .sidebar.open {
+                left: 0; /* Slide sidebar into view */
+            }
+
+            /* Optional: Add overlay when sidebar is open */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 800;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 10px;
+                gap: 10px;
+            }
+
+            .logo-section {
+                margin-right: 10px;
+            }
+
+            .search-container {
+                max-width: 200px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .nav-item i {
+                font-size: 16px;
+            }
+
+            .nav-item span {
+                display: none;
+            }
+
+            .nav-item {
+                padding: 10px;
+            }
+
+            .cart-count {
+                top: -2px;
+                right: -2px;
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-container {
+                max-width: 150px;
+            }
+
+            .nav-item {
+                padding: 8px;
+            }
+        }
+
+        /* Popular items styles */
+        .popular-section {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); /* Light blue gradient */
+            border-radius: 30px;
+            margin: 0 10px 10px 10px; /* Remove top margin */
+            padding: 40px 0 30px 0;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popular-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.2' d='M0,160L48,176C96,192,192,224,288,245.3C384,267,480,277,576,250.7C672,224,768,160,864,128C960,96,1056,96,1152,128C1248,160,1344,224,1392,256L1440,288L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E") no-repeat center bottom;
+            background-size: cover;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .popular-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a1a; /* Dark text */
+            margin-left: 40px;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .popular-carousel {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 600px;
+            padding: 20px 0;
+        }
+
+        .popular-item-card {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); /* Light blue gradient */
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); /* Adjust shadow */
+            transition: transform 0.3s ease;
+            min-width: 600px;
+            margin: 0 25px;
+            height: 500px;
+            border: 1px solid transparent; /* No border by default */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: row-reverse; /* Reverse order: image on right */
+            align-items: center; /* Vertically align items */
+            gap: 30px; /* Increase gap between details and image */
+        }
+
+        .popular-item-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1); /* Adjust hover shadow */
+            border: 1px solid rgba(0, 150, 136, 0.5); /* Subtle teal border on hover */
+        }
+
+        .popular-item-image {
+            width: 100%;
+            height: auto; /* Allow image height to adjust based on width */
+            object-fit: contain; /* Ensure the whole image is visible */
+            border-radius: 20px;
+            margin-bottom: 0; /* Remove bottom margin */
+            flex: 1; /* Allow image to take up available space */
+            max-width: 300px; /* Adjust max width for better proportion */
+            min-width: 200px; /* Ensure a minimum width */
+        }
+
+        .popular-item-details {
+            padding: 0; /* Remove padding */
+            flex: 1; /* Allow details to take up available space */
+        }
+
+        .popular-item-name {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a1a1a; /* Dark text */
+            margin-bottom: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .popular-item-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: #01579b; /* Darker blue for price */
+        }
+
+        .popular-item-original-price {
+            font-size: 28px;
+            color: #4a4a4a; /* Darker gray */
+            text-decoration: line-through;
+            margin-left: 20px;
+        }
+
+        .popular-item-discount {
+            font-size: 28px;
+            color: #1a1a1a; /* Dark text for discount */
+            margin-left: 20px;
+            font-weight: 600;
+            background: rgba(0,0,0,0.05); /* Subtle background */
+            padding: 8px 16px;
+            border-radius: 12px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%);} /* Keep -50% for loop */
+        }
+
+        @media (max-width: 768px) {
+            .popular-section {
+                padding: 30px 0 20px 0;
+            }
+            
+            .popular-title {
+                font-size: 32px;
+                margin-left: 20px;
+                margin-bottom: 25px;
+            }
+
+            .popular-carousel {
+                height: 450px;
+            }
+
+            .popular-item-card {
+                min-width: 350px;
+                height: 400px;
+                padding: 25px;
+            }
+
+            .popular-item-image {
+                height: 280px;
+            }
+
+            .popular-item-name {
+                font-size: 24px;
+                height: 32px;
+            }
+
+            .popular-item-price {
+                font-size: 28px;
+            }
+
+            .popular-item-original-price,
+            .popular-item-discount {
+                font-size: 22px;
+            }
+        }
+
+        .popular-carousel-track {
+            display: flex;
+            gap: 30px;
+            animation: marquee 30s linear infinite; /* Faster animation */
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%);} /* Keep -50% for loop */
+        }
+
+        @media (max-width: 768px) {
+            .popular-section {
+                padding: 30px 0 20px 0;
+            }
+            
+            .popular-title {
+                font-size: 28px;
+                margin-left: 20px;
+                margin-bottom: 20px;
+            }
+
+            .popular-carousel {
+                height: 250px;
+            }
+
+            .popular-item-card {
+                min-width: 220px;
+                height: 220px;
+                padding: 15px;
+            }
+
+            .popular-item-image {
+                height: 160px;
+            }
+
+            .popular-item-name {
+                font-size: 16px;
+            }
+
+            .popular-item-price {
+                font-size: 18px;
+            }
+
+            .popular-item-original-price,
+            .popular-item-discount {
+                font-size: 14px;
+            }
+        }
+
+        /* New Card Icon Button Styles */
+        .card-icon-button {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Gap between icon and text */
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 5px 10px; /* Reduced padding */
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+            order: 5; /* Place after cart */
+            height: 50px; /* Match search bar height */
+        }
+
+        .card-icon-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon-button i {
+            font-size: 22px;
+        }
+
+        @media (max-width: 992px) {
+            .nav-container {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .search-container {
+                max-width: 300px; /* Adjust max width for tablets */
+            }
+  
+            .logo-section {
+                margin: 0 auto; /* Ensure centering */
+            }
+  
+            .logo {
+                font-size: 40px; /* Adjust font size for tablets */
+            }
+
+            .card-icon-button,
+            .cart-link {
+                padding: 8px 12px; /* Adjust padding */
+                height: 45px; /* Adjust height */
+            }
+
+            .card-icon-button i,
+            .cart-link i {
+                font-size: 20px; /* Adjust icon size */
+            }
+
+            .cart-count {
+                top: -2px;
+                right: -2px;
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 10px;
+                gap: 10px;
+            }
+
+            .search-container {
+                width: 200px; /* Adjust width for phones */
+            }
+
+            .logo {
+                font-size: 30px; /* Further adjust font size */
+            }
+
+            .card-icon-button,
+            .cart-link {
+                padding: 5px 8px; /* Further adjust padding */
+                height: 40px; /* Further adjust height */
+                font-size: 12px; /* Adjust text size if visible */
+            }
+
+            .card-icon-button i,
+            .cart-link i {
+                font-size: 18px; /* Further adjust icon size */
+            }
+
+            .popular-section {
+                padding: 30px 0 20px 0;
+            }
+            
+            .popular-title {
+                font-size: 28px;
+                margin-left: 20px;
+                margin-bottom: 20px;
+            }
+
+            .popular-carousel {
+                height: 450px;
+            }
+
+            .popular-item-card {
+                min-width: 350px;
+                height: 400px;
+                padding: 25px;
+            }
+
+            .popular-item-image {
+                height: 280px;
+            }
+
+            .popular-item-name {
+                font-size: 24px;
+                height: auto; /* Allow height to adjust */
+                overflow: hidden; /* Keep overflow hidden */
+                text-overflow: ellipsis; /* Keep ellipsis */
+                display: -webkit-box; /* For multiline ellipsis */
+                -webkit-line-clamp: 2; /* Limit to 2 lines */
+                -webkit-box-orient: vertical; /* For multiline ellipsis */
+            }
+
+            .popular-item-price {
+                font-size: 28px;
+            }
+
+            .popular-item-original-price,
+            .popular-item-discount {
+                font-size: 22px;
+            }
+
+            .category-title {
+                font-size: 28px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust min width */
+                gap: 20px; /* Adjust gap */
+            }
+
+            .category-card {
+                padding: 25px 15px; /* Adjust padding */
+            }
+
+            .category-img {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 15px;
+            }
+
+            .category-name {
+                font-size: 18px;
+            }
+
+            .category-description {
+                font-size: 14px;
+            }
+
+            .grocery-section-title {
+                font-size: 24px;
+            }
+
+            .grocery-items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust min width */
+                gap: 20px; /* Adjust gap */
+            }
+
+            .grocery-item-card {
+                padding: 15px;
+            }
+
+            .grocery-item-image {
+                height: 180px;
+            }
+
+            .grocery-item-name {
+                font-size: 15px;
+                height: auto; /* Allow height to adjust */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .grocery-item-price {
+                font-size: 18px;
+            }
+
+            .grocery-item-original-price,
+            .grocery-item-discount {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-container {
+                padding: 0 10px;
+                gap: 8px;
+            }
+
+            .search-container {
+                width: 150px; /* Further reduce width */
+            }
+
+            .logo {
+                font-size: 24px; /* Further reduce font size */
+            }
+
+            .card-icon-button,
+            .cart-link {
+                padding: 5px 8px; /* Keep padding same */
+                height: 35px; /* Further reduce height */
+            }
+
+            .card-icon-button i,
+            .cart-link i {
+                font-size: 16px; /* Further reduce icon size */
+            }
+
+            .popular-section {
+                padding: 20px 0 15px 0;
+            }
+
+            .popular-title {
+                font-size: 24px;
+                margin-left: 15px;
+                margin-bottom: 15px;
+            }
+
+            .popular-carousel {
+                height: 350px; /* Adjust height */
+                gap: 20px; /* Adjust gap */
+            }
+
+            .popular-item-card {
+                min-width: 300px;
+                height: 300px;
+                padding: 20px;
+                margin: 0 10px; /* Adjust margin */
+            }
+
+            .popular-item-image {
+                height: 200px;
+                max-width: 200px; /* Adjust max width */
+                min-width: 150px; /* Adjust min width */
+            }
+
+            .popular-item-name {
+                font-size: 20px;
+            }
+
+            .popular-item-price {
+                font-size: 24px;
+            }
+
+            .popular-item-original-price,
+            .popular-item-discount {
+                font-size: 18px;
+            }
+
+            .category-title {
+                font-size: 24px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Further adjust min width */
+                gap: 15px; /* Further adjust gap */
+            }
+
+            .category-card {
+                padding: 20px 10px; /* Further adjust padding */
+            }
+
+            .category-img {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 10px;
+            }
+
+            .category-name {
+                font-size: 16px;
+            }
+
+            .category-description {
+                font-size: 13px;
+            }
+
+            .grocery-section-title {
+                font-size: 20px;
+            }
+
+            .grocery-items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Further adjust min width */
+                gap: 15px; /* Further adjust gap */
+            }
+
+            .grocery-item-card {
+                padding: 10px;
+            }
+
+            .grocery-item-image {
+                height: 150px;
+            }
+
+            .grocery-item-name {
+                font-size: 14px;
+            }
+
+            .grocery-item-price {
+                font-size: 16px;
+            }
+
+            .grocery-item-original-price,
+            .grocery-item-discount {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="header">
+        <div class="nav-container">
+            <!-- Left Header Group - Now empty or can be removed if not needed for other elements -->
+            <div class="left-header-group">
+                
+            </div>
+
+            <!-- Logo -->
+            <div class="logo-section">
+                <a href="#" class="logo">
+                      <span>All in one shop</span>
+                </a>
+            </div>
+
+            <!-- Hamburger Menu Icon (Mobile) -->
+            <div class="hamburger-menu">
+                <i class="fas fa-ellipsis-v"></i> <!-- Three vertical dots icon -->
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search for products, brands and more">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <!-- New Card Icon Button (Placeholder) -->
+            <a href="#" class="nav-item card-icon-button">
+                 <i class="fas fa-credit-card"></i> <!-- Using a credit card icon as a placeholder -->
+                 <span>Card</span>
+            </a>
+
+            <!-- Cart Link -->
+            <a href="#" class="nav-item cart-link">
+                <i class="fas fa-shopping-cart"></i> <!-- Cart Icon -->
+                <span class="cart-count">0</span>
+            </a>
+
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">Categories</div>
+        <a href="#" class="sidebar-item" onclick="showGroceryItems(event)">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/29327f40e9c4d26b.png" alt="Grocery">
+            <span>Grocery</span>
+        </a>
+        <a href="#" class="sidebar-item" onclick="showMobileItems(event)">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/22fddf3c7da4c4f4.png" alt="Mobiles">
+            <span>Mobiles</span>
+        </a>
+        <a href="#" class="sidebar-item" onclick="showFashionItems(event)">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/c12afc017e6f24cb.png" alt="Fashion">
+            <span>Fashion</span>
+        </a>
+        <a href="#" class="sidebar-item" onclick="showElectronicsItems(event)">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/69c6589653afdb9a.png" alt="Electronics">
+            <span>Electronics</span>
+        </a>
+        <a href="#" class="sidebar-item" onclick="showToysItems(event)">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png" alt="Toys">
+            <span>Toys & More</span>
+        </a>
+        <a href="#" class="sidebar-item" onclick="showFoodItems(event)">
+            <img src="dress/food/IMG-20250523-WA0029.jpg" alt="Food">
+            <span>Food</span>
+        </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Popular Section (Carousel/Marquee) -->
+        <section class="popular-section">
+            <h2 class="popular-title">Popular</h2>
+            <div class="popular-carousel" id="popularCarousel">
+                <!-- Images will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories">
+            <h2 class="category-title">Shop by Category</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="showGroceryItems(event)">
+                    <span class="category-count">120+ Items</span>
+                    <img src="https://rukminim2.flixcart.com/flap/128/128/image/29327f40e9c4d26b.png" alt="Grocery" class="category-img">
+                    <div class="category-name">Grocery</div>
+                    <div class="category-description">Fresh groceries & daily essentials</div>
+                    <i class="category-icon">→</i>
+                </div>
+                <div class="category-card" onclick="showMobileItems(event)">
+                    <span class="category-count">50+ Items</span>
+                    <img src="https://rukminim2.flixcart.com/flap/128/128/image/22fddf3c7da4c4f4.png" alt="Mobiles" class="category-img">
+                    <div class="category-name">Mobiles</div>
+                    <div class="category-description">Latest smartphones & accessories</div>
+                    <i class="category-icon">→</i>
+                </div>
+                <div class="category-card" onclick="showFashionItems(event)">
+                    <span class="category-count">200+ Items</span>
+                    <img src="https://rukminim2.flixcart.com/flap/128/128/image/c12afc017e6f24cb.png" alt="Fashion" class="category-img">
+                    <div class="category-name">Fashion</div>
+                    <div class="category-description">Trendy clothing & accessories</div>
+                    <i class="category-icon">→</i>
+                </div>
+                <div class="category-card" onclick="showElectronicsItems(event)">
+                    <span class="category-count">150+ Items</span>
+                    <img src="https://rukminim2.flixcart.com/flap/128/128/image/69c6589653afdb9a.png" alt="Electronics" class="category-img">
+                    <div class="category-name">Electronics</div>
+                    <div class="category-description">Gadgets & electronic devices</div>
+                    <i class="category-icon">→</i>
+                </div>
+                <div class="category-card" onclick="showToysItems(event)">
+                    <span class="category-count">80+ Items</span>
+                    <img src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png" alt="Toys" class="category-img">
+                    <div class="category-name">Toys & More</div>
+                    <div class="category-description">Fun toys & games collection</div>
+                    <i class="category-icon">→</i>
+                </div>
+                <div class="category-card" onclick="showFoodItems(event)">
+                    <span class="category-count">100+ Items</span>
+                    <img src="dress/food/IMG-20250523-WA0029.jpg" alt="Food" class="category-img">
+                    <div class="category-name">Food</div>
+                    <div class="category-description">Delicious food & beverages</div>
+                    <i class="category-icon">→</i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grocery Section -->
+        <section class="grocery-items-section" id="groceryItemsSection">
+            <div class="grocery-section-header">
+                <h2 class="grocery-section-title">Grocery Items</h2>
+                <button class="close-grocery-btn" onclick="hideGroceryItems()">×</button>
+            </div>
+            <div class="grocery-items-grid" id="groceryItemsGrid">
+                <!-- Grocery items will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Add this after the grocery items section -->
+        <section class="grocery-items-section" id="mobileItemsSection">
+            <div class="grocery-section-header">
+                <h2 class="grocery-section-title">Mobile Phones</h2>
+                <button class="close-grocery-btn" onclick="hideMobileItems()">×</button>
+            </div>
+            <div class="grocery-items-grid" id="mobileItemsGrid">
+                <!-- Mobile items will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Add this after the mobile items section -->
+        <section class="grocery-items-section" id="fashionItemsSection">
+            <div class="grocery-section-header">
+                <h2 class="grocery-section-title">Fashion Collection</h2>
+                <button class="close-grocery-btn" onclick="hideFashionItems()">×</button>
+            </div>
+            <div class="grocery-items-grid" id="fashionItemsGrid">
+                <!-- Fashion items will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Add this after the fashion items section -->
+        <section class="grocery-items-section" id="electronicsItemsSection">
+            <div class="grocery-section-header">
+                <h2 class="grocery-section-title">Electronics Collection</h2>
+                <button class="close-grocery-btn" onclick="hideElectronicsItems()">×</button>
+            </div>
+            <div class="grocery-items-grid" id="electronicsItemsGrid">
+                <!-- Electronics items will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Add this after the electronics items section -->
+        <section class="grocery-items-section" id="toysItemsSection">
+            <div class="grocery-section-header">
+                <h2 class="grocery-section-title">Toys Collection</h2>
+                <button class="close-grocery-btn" onclick="hideToysItems()">×</button>
+            </div>
+            <div class="grocery-items-grid" id="toysItemsGrid">
+                <!-- Toys items will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Add this after the toys items section -->
+        <section class="grocery-items-section" id="foodItemsSection">
+            <div class="grocery-section-header">
+                <h2 class="grocery-section-title">Food Collection</h2>
+                <button class="close-grocery-btn" onclick="hideFoodItems()">×</button>
+            </div>
+            <div class="grocery-items-grid" id="foodItemsGrid">
+                <!-- Food items will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="categories">
+            <h2 class="category-title">Deals of the Day</h2>
+            <div class="products-grid">
+                <!-- Product Cards will go here -->
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/3/5/l/-original-imagtc5fz9spysyk.jpeg" alt="iPhone" class="product-img">
+                    <div class="product-title">APPLE iPhone 14 (Blue, 128 GB)</div>
+                    <div class="product-price">₹58,999 <span class="product-original-price">₹61,999</span> <span class="product-discount">5% off</span></div>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/312/312/xif0q/computer/j/6/3/15-ec2145ax-gaming-laptop-acer-original-imagp9hyabg9wzgc.jpeg" alt="Laptop" class="product-img">
+                    <div class="product-title">Acer Nitro 5 Ryzen 5 Hexa Core 5600H</div>
+                    <div class="product-price">₹54,990 <span class="product-original-price">₹64,990</span> <span class="product-discount">15% off</span></div>
+                </div>
+                <!-- Add more product cards as needed -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item active">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/1aff0877b8d0c98e.png" alt="Home" class="bottom-nav-icon">
+            <span>Home</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/1aff0877b8d0c98e.png" alt="Categories" class="bottom-nav-icon">
+            <span>Categories</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/1aff0877b8d0c98e.png" alt="Cart" class="bottom-nav-icon">
+            <span>Cart</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <img src="https://rukminim2.flixcart.com/flap/128/128/image/1aff0877b8d0c98e.png" alt="Account" class="bottom-nav-icon">
+            <span>Account</span>
+        </a>
+    </nav>
+
+    <script>
+        // Grocery items data with names and prices
+        const groceryItems = [
+            {
+                image: 'dress/grocery/61v2QfDa3sL._AC_UF1000,1000_QL80_.jpg',
+                name: 'Organic Fresh Fruits Basket',
+                price: 599,
+                originalPrice: 799,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/soaps.webp',
+                name: 'Natural Handmade Soaps Pack',
+                price: 299,
+                originalPrice: 399,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/download.jpeg',
+                name: 'Fresh Grocery Essentials',
+                price: 449,
+                originalPrice: 599,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/shopping (6).webp',
+                name: 'Premium Grocery Pack',
+                price: 899,
+                originalPrice: 1199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/shopping (5).webp',
+                name: 'Daily Grocery Bundle',
+                price: 699,
+                originalPrice: 899,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/grocery/shopping (4).webp',
+                name: 'Organic Food Collection',
+                price: 799,
+                originalPrice: 999,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/grocery/shopping (3).webp',
+                name: 'Fresh Produce Pack',
+                price: 549,
+                originalPrice: 699,
+                discount: '21% off'
+            },
+            {
+                image: 'dress/grocery/shopping (2).webp',
+                name: 'Grocery Essentials Kit',
+                price: 649,
+                originalPrice: 799,
+                discount: '19% off'
+            },
+            {
+                image: 'dress/grocery/1_101b2734-5b84-4ccd-97c3-ea15e483f1f0.webp',
+                name: 'Premium Food Items',
+                price: 999,
+                originalPrice: 1299,
+                discount: '23% off'
+            },
+            {
+                image: 'dress/grocery/shopping (1).webp',
+                name: 'Fresh Food Collection',
+                price: 749,
+                originalPrice: 949,
+                discount: '21% off'
+            },
+            {
+                image: 'dress/grocery/shopping.webp',
+                name: 'Grocery Shopping Bundle',
+                price: 849,
+                originalPrice: 1099,
+                discount: '23% off'
+            },
+            {
+                image: 'dress/grocery/v8gxj_1200.jpg',
+                name: 'Organic Food Basket',
+                price: 1299,
+                originalPrice: 1599,
+                discount: '19% off'
+            },
+            {
+                image: 'dress/grocery/istockphoto-172791298-612x612.jpg',
+                name: 'Fresh Vegetables Pack',
+                price: 399,
+                originalPrice: 499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/grocery/istockphoto-1356634353-612x612.jpg',
+                name: 'Premium Grocery Items',
+                price: 899,
+                originalPrice: 1149,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/grocery/mus-4951990_1280.jpg',
+                name: 'Fresh Food Collection',
+                price: 699,
+                originalPrice: 899,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/grocery/food-2725243_1280.jpg',
+                name: 'Premium Grocery Essentials Kit',
+                price: 1299,
+                originalPrice: 1599,
+                discount: '19% off'
+            },
+            {
+                image: 'dress/grocery/bell-peppers-1264209_1280.jpg',
+                name: 'Fresh Bell Peppers Pack',
+                price: 149,
+                originalPrice: 199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/fruit-3860991_1280.jpg',
+                name: 'Assorted Fresh Fruits Pack',
+                price: 399,
+                originalPrice: 499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/grocery/can-443123_1280.webp',
+                name: 'Canned Food Combo Pack',
+                price: 449,
+                originalPrice: 599,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/savoy-4637421_1280.jpg',
+                name: 'Fresh Vegetables Bundle',
+                price: 299,
+                originalPrice: 399,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/grocery/tomatoes-8181194_1280.jpg',
+                name: 'Fresh Tomatoes Pack',
+                price: 99,
+                originalPrice: 129,
+                discount: '23% off'
+            }
+        ];
+
+        function showGroceryItems(event) {
+            event.preventDefault();
+            const section = document.getElementById('groceryItemsSection');
+            section.classList.add('active');
+            loadGroceryItems();
+            
+            // Scroll to the grocery section
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideGroceryItems() {
+            const section = document.getElementById('groceryItemsSection');
+            section.classList.remove('active');
+        }
+
+        function loadGroceryItems() {
+            const grid = document.getElementById('groceryItemsGrid');
+            grid.innerHTML = ''; // Clear existing content
+
+            groceryItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'grocery-item-card';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="grocery-item-image" loading="lazy">
+                    <div class="grocery-item-details">
+                        <div class="grocery-item-name">${item.name}</div>
+                        <div class="grocery-item-price">
+                            ₹${item.price}
+                            <span class="grocery-item-original-price">₹${item.originalPrice}</span>
+                            <span class="grocery-item-discount">${item.discount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Mobile items data
+        const mobileItems = [
+            {
+                image: 'dress/mobiles/IMG-20250522-WA0008.jpg',
+                name: 'APPLE iPhone 14 (Blue, 128 GB)',
+                price: 58999,
+                originalPrice: 61999,
+                discount: '5% off'
+            },
+            {
+                image: 'dress/mobiles/IMG-20250522-WA0007.jpg',
+                name: 'SAMSUNG Galaxy S23 Ultra 5G (Green, 256 GB)',
+                price: 124999,
+                originalPrice: 129999,
+                discount: '4% off'
+            },
+            {
+                image: 'dress/mobiles/IMG-20250522-WA0006.jpg',
+                name: 'OnePlus 11 5G (Eternal Green, 256 GB)',
+                price: 56999,
+                originalPrice: 61999,
+                discount: '8% off'
+            },
+            {
+                image: 'dress/mobiles/IMG-20250522-WA0005.jpg',
+                name: 'Xiaomi 13 Pro 5G (Ceramic Black, 256 GB)',
+                price: 69999,
+                originalPrice: 79999,
+                discount: '12% off'
+            },
+            {
+                image: 'dress/mobiles/IMG-20250522-WA0004.jpg',
+                name: 'Google Pixel 7 Pro 5G (Obsidian, 128 GB)',
+                price: 64999,
+                originalPrice: 69999,
+                discount: '7% off'
+            },
+            {
+                image: 'dress/mobiles/IMG-20250522-WA0003.jpg',
+                name: 'Vivo X90 Pro 5G (Legendary Black, 256 GB)',
+                price: 84999,
+                originalPrice: 89999,
+                discount: '6% off'
+            },
+            {
+                image: 'dress/mobiles/images (8).jpeg',
+                name: 'OPPO Find X6 Pro 5G (Glossy Black, 256 GB)',
+                price: 79999,
+                originalPrice: 84999,
+                discount: '6% off'
+            },
+            {
+                image: 'dress/mobiles/images (7).jpeg',
+                name: 'Nothing Phone (1) (White, 128 GB)',
+                price: 29999,
+                originalPrice: 32999,
+                discount: '9% off'
+            },
+            {
+                image: 'dress/mobiles/images (6).jpeg',
+                name: 'Realme GT Neo 3 5G (Glory Black, 128 GB)',
+                price: 24999,
+                originalPrice: 27999,
+                discount: '11% off'
+            },
+            {
+                image: 'dress/mobiles/download (1).jpeg',
+                name: 'Motorola Edge 40 5G (Nebula Green, 256 GB)',
+                price: 34999,
+                originalPrice: 37999,
+                discount: '8% off'
+            },
+            {
+                image: 'dress/mobiles/download.jpeg',
+                name: 'iQOO Neo 7 5G (Frost Blue, 128 GB)',
+                price: 27999,
+                originalPrice: 29999,
+                discount: '7% off'
+            }
+        ];
+
+        function showMobileItems(event) {
+            event.preventDefault();
+            const section = document.getElementById('mobileItemsSection');
+            section.classList.add('active');
+            loadMobileItems();
+            
+            // Scroll to the mobile section
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideMobileItems() {
+            const section = document.getElementById('mobileItemsSection');
+            section.classList.remove('active');
+        }
+
+        function loadMobileItems() {
+            const grid = document.getElementById('mobileItemsGrid');
+            grid.innerHTML = ''; // Clear existing content
+
+            mobileItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'grocery-item-card';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="grocery-item-image" loading="lazy">
+                    <div class="grocery-item-details">
+                        <div class="grocery-item-name">${item.name}</div>
+                        <div class="grocery-item-price">
+                            ₹${item.price}
+                            <span class="grocery-item-original-price">₹${item.originalPrice}</span>
+                            <span class="grocery-item-discount">${item.discount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Fashion items data
+        const fashionItems = [
+            {
+                image: 'dress/Fashion/IMG_20240304_200619.jpg',
+                name: 'Designer Ethnic Dress',
+                price: 2499,
+                originalPrice: 3499,
+                discount: '29% off'
+            },
+            {
+                image: 'dress/Fashion/KRESLA_PLEATED_CHANDERI_DRESS_480x480.webp',
+                name: 'Chanderi Silk Dress',
+                price: 3999,
+                originalPrice: 4999,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/Fashion/HSY_Kurta_Shalwar_480x480.webp',
+                name: 'Traditional Kurta Shalwar',
+                price: 2999,
+                originalPrice: 3999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/Fashion/1679394691798-z-1-originnm80prcnt-500x500.webp',
+                name: 'Modern Fusion Wear',
+                price: 1799,
+                originalPrice: 2299,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/Fashion/10_Creative_Ways_to_Repurpose_Old_Sarees_into_Modern_Dresses.webp',
+                name: 'Contemporary Saree Dress',
+                price: 4499,
+                originalPrice: 5999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/Fashion/686b6d06b3a5188e2c6cd5745cb51dfc.jpg',
+                name: 'Designer Evening Wear',
+                price: 5999,
+                originalPrice: 7999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/Fashion/dcd40d9a7f9cf6a52e6cd4b2b93b15f6.jpg',
+                name: 'Party Wear Collection',
+                price: 3499,
+                originalPrice: 4499,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/Fashion/IMG_5644.jpg',
+                name: 'Premium Ethnic Wear',
+                price: 4999,
+                originalPrice: 6499,
+                discount: '23% off'
+            },
+            {
+                image: 'dress/Fashion/images (3).jpeg',
+                name: 'Casual Summer Collection',
+                price: 1999,
+                originalPrice: 2499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/Fashion/Trends-U210684012534XLH--621x414@LiveMint.webp',
+                name: 'Latest Fashion Trends',
+                price: 3299,
+                originalPrice: 3999,
+                discount: '18% off'
+            },
+            {
+                image: 'dress/Fashion/images (2).jpeg',
+                name: 'Designer Western Wear',
+                price: 2799,
+                originalPrice: 3499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/Fashion/download (1).jpeg',
+                name: 'Stylish Casual Wear',
+                price: 1599,
+                originalPrice: 1999,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/Fashion/images (1).jpeg',
+                name: 'Trendy Street Style',
+                price: 1899,
+                originalPrice: 2399,
+                discount: '21% off'
+            },
+            {
+                image: 'dress/Fashion/images.jpeg',
+                name: 'Classic Formal Wear',
+                price: 3599,
+                originalPrice: 4499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/Fashion/rg1ds_512.webp',
+                name: 'Designer Party Wear',
+                price: 4999,
+                originalPrice: 5999,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/Fashion/download.jpeg',
+                name: 'Premium Casual Collection',
+                price: 2299,
+                originalPrice: 2899,
+                discount: '21% off'
+            },
+            {
+                image: 'dress/Fashion/pexels-godisable-jacob-226636-794064.jpg',
+                name: 'Luxury Fashion Collection',
+                price: 6999,
+                originalPrice: 8999,
+                discount: '22% off'
+            }
+        ];
+
+        function showFashionItems(event) {
+            event.preventDefault();
+            const section = document.getElementById('fashionItemsSection');
+            section.classList.add('active');
+            loadFashionItems();
+            
+            // Scroll to the fashion section
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideFashionItems() {
+            const section = document.getElementById('fashionItemsSection');
+            section.classList.remove('active');
+        }
+
+        function loadFashionItems() {
+            const grid = document.getElementById('fashionItemsGrid');
+            grid.innerHTML = ''; // Clear existing content
+
+            fashionItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'grocery-item-card';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="grocery-item-image" loading="lazy">
+                    <div class="grocery-item-details">
+                        <div class="grocery-item-name">${item.name}</div>
+                        <div class="grocery-item-price">
+                            ₹${item.price}
+                            <span class="grocery-item-original-price">₹${item.originalPrice}</span>
+                            <span class="grocery-item-discount">${item.discount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Electronics items data
+        const electronicsItems = [
+            {
+                image: 'dress/electronics/IMG-20250523-WA0018.jpg',
+                name: 'Gaming Laptop Pro',
+                price: 89999,
+                originalPrice: 99999,
+                discount: '10% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0017.jpg',
+                name: 'Ultra HD Smart TV',
+                price: 49999,
+                originalPrice: 54999,
+                discount: '9% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0016.jpg',
+                name: 'Wireless Gaming Mouse',
+                price: 2999,
+                originalPrice: 3499,
+                discount: '14% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0015.jpg',
+                name: 'Mechanical Keyboard',
+                price: 4999,
+                originalPrice: 5999,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0014.jpg',
+                name: 'Bluetooth Headphones',
+                price: 3999,
+                originalPrice: 4499,
+                discount: '11% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0013.jpg',
+                name: 'Gaming Monitor',
+                price: 24999,
+                originalPrice: 27999,
+                discount: '11% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0012.jpg',
+                name: 'Wireless Earbuds',
+                price: 1999,
+                originalPrice: 2499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0009.jpg',
+                name: 'Smart Watch',
+                price: 4999,
+                originalPrice: 5999,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0008.jpg',
+                name: 'Power Bank',
+                price: 1499,
+                originalPrice: 1999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0007.jpg',
+                name: 'Wireless Speaker',
+                price: 2999,
+                originalPrice: 3499,
+                discount: '14% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0006.jpg',
+                name: 'Gaming Console',
+                price: 39999,
+                originalPrice: 44999,
+                discount: '11% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0005.jpg',
+                name: 'Tablet Pro',
+                price: 29999,
+                originalPrice: 32999,
+                discount: '9% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0004.jpg',
+                name: 'Smart Home Hub',
+                price: 4999,
+                originalPrice: 5999,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0003.jpg',
+                name: 'Wireless Charger',
+                price: 1499,
+                originalPrice: 1999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0002.jpg',
+                name: 'USB-C Hub',
+                price: 999,
+                originalPrice: 1299,
+                discount: '23% off'
+            },
+            {
+                image: 'dress/electronics/IMG-20250523-WA0001.jpg',
+                name: 'Wireless Mouse',
+                price: 799,
+                originalPrice: 999,
+                discount: '20% off'
+            }
+        ];
+
+        function showElectronicsItems(event) {
+            event.preventDefault();
+            const section = document.getElementById('electronicsItemsSection');
+            section.classList.add('active');
+            loadElectronicsItems();
+            
+            // Scroll to the electronics section
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideElectronicsItems() {
+            const section = document.getElementById('electronicsItemsSection');
+            section.classList.remove('active');
+        }
+
+        function loadElectronicsItems() {
+            const grid = document.getElementById('electronicsItemsGrid');
+            grid.innerHTML = ''; // Clear existing content
+
+            electronicsItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'grocery-item-card';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="grocery-item-image" loading="lazy">
+                    <div class="grocery-item-details">
+                        <div class="grocery-item-name">${item.name}</div>
+                        <div class="grocery-item-price">
+                            ₹${item.price}
+                            <span class="grocery-item-original-price">₹${item.originalPrice}</span>
+                            <span class="grocery-item-discount">${item.discount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Toys items data
+        const toysItems = [
+            {
+                image: 'dress/toys/shopping (12).webp',
+                name: 'Educational Building Blocks',
+                price: 999,
+                originalPrice: 1299,
+                discount: '23% off'
+            },
+            {
+                image: 'dress/toys/shopping (11).webp',
+                name: 'Remote Control Car',
+                price: 1499,
+                originalPrice: 1999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/toys/shopping (10).webp',
+                name: 'Plush Teddy Bear',
+                price: 799,
+                originalPrice: 999,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/toys/shopping (9).webp',
+                name: 'Musical Toy Set',
+                price: 1299,
+                originalPrice: 1599,
+                discount: '19% off'
+            },
+            {
+                image: 'dress/toys/shopping (8).webp',
+                name: 'Art & Craft Kit',
+                price: 899,
+                originalPrice: 1199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/toys/shopping (7).webp',
+                name: 'Puzzle Game Set',
+                price: 699,
+                originalPrice: 899,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/toys/shopping (6).webp',
+                name: 'Science Experiment Kit',
+                price: 1499,
+                originalPrice: 1899,
+                discount: '21% off'
+            },
+            {
+                image: 'dress/toys/shopping (5).webp',
+                name: 'Doll House Set',
+                price: 1999,
+                originalPrice: 2499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/toys/shopping (4).webp',
+                name: 'Board Games Collection',
+                price: 1299,
+                originalPrice: 1599,
+                discount: '19% off'
+            },
+            {
+                image: 'dress/toys/shopping (3).webp',
+                name: 'Action Figure Set',
+                price: 899,
+                originalPrice: 1199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/toys/shopping (2).webp',
+                name: 'LEGO Building Set',
+                price: 2499,
+                originalPrice: 2999,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/toys/shopping (1).webp',
+                name: 'Toy Kitchen Set',
+                price: 1799,
+                originalPrice: 2299,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/toys/shopping.webp',
+                name: 'Educational Toy Bundle',
+                price: 1599,
+                originalPrice: 1999,
+                discount: '20% off'
+            }
+        ];
+
+        function showToysItems(event) {
+            event.preventDefault();
+            const section = document.getElementById('toysItemsSection');
+            section.classList.add('active');
+            loadToysItems();
+            
+            // Scroll to the toys section
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideToysItems() {
+            const section = document.getElementById('toysItemsSection');
+            section.classList.remove('active');
+        }
+
+        function loadToysItems() {
+            const grid = document.getElementById('toysItemsGrid');
+            grid.innerHTML = ''; // Clear existing content
+
+            toysItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'grocery-item-card';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="grocery-item-image" loading="lazy">
+                    <div class="grocery-item-details">
+                        <div class="grocery-item-name">${item.name}</div>
+                        <div class="grocery-item-price">
+                            ₹${item.price}
+                            <span class="grocery-item-original-price">₹${item.originalPrice}</span>
+                            <span class="grocery-item-discount">${item.discount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Food items data
+        const foodItems = [
+            {
+                image: 'dress/food/WhatsApp Image 2025-05-23 at 01.07.33_60246487.jpg',
+                name: 'Masala Dosa',
+                price: 149,
+                originalPrice: 199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/populor/brown-leather-sandals-product-showcase-r7zqnbq8r6n782wf.png"',
+                name: 'Butter Chicken',
+                price: 299,
+                originalPrice: 399,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/food/WhatsApp Image 2025-05-23 at 01.07.32_439636ec.jpg',
+                name: 'Biryani Special',
+                price: 249,
+                originalPrice: 349,
+                discount: '29% off'
+            },
+            {
+                image: 'dress/food/WhatsApp Image 2025-05-23 at 01.07.32_f3500daa.jpg',
+                name: 'Thali Special',
+                price: 199,
+                originalPrice: 249,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0031.jpg',
+                name: 'Pav Bhaji',
+                price: 129,
+                originalPrice: 179,
+                discount: '28% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0030.jpg',
+                name: 'Chole Bhature',
+                price: 149,
+                originalPrice: 199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0029.jpg',
+                name: 'Grilled Sandwich',
+                price: 99,
+                originalPrice: 129,
+                discount: '23% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0028.jpg',
+                name: 'Chicken Curry',
+                price: 249,
+                originalPrice: 299,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0027.jpg',
+                name: 'Fruit Chaat',
+                price: 79,
+                originalPrice: 99,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0026.jpg',
+                name: 'Pasta Special',
+                price: 199,
+                originalPrice: 249,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0025.jpg',
+                name: 'Pizza Special',
+                price: 299,
+                originalPrice: 399,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0024.jpg',
+                name: 'Veg Wrap',
+                price: 129,
+                originalPrice: 159,
+                discount: '19% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0023.jpg',
+                name: 'Chicken Burger',
+                price: 149,
+                originalPrice: 199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0022.jpg',
+                name: 'Pasta Alfredo',
+                price: 199,
+                originalPrice: 249,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/food/IMG-20250523-WA0021.jpg',
+                name: 'Fresh Salad',
+                price: 99,
+                originalPrice: 129,
+                discount: '23% off'
+            }
+        ];
+
+        function showFoodItems(event) {
+            event.preventDefault();
+            const section = document.getElementById('foodItemsSection');
+            section.classList.add('active');
+            loadFoodItems();
+            
+            // Scroll to the food section
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideFoodItems() {
+            const section = document.getElementById('foodItemsSection');
+            section.classList.remove('active');
+        }
+
+        function loadFoodItems() {
+            const grid = document.getElementById('foodItemsGrid');
+            grid.innerHTML = ''; // Clear existing content
+
+            foodItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'grocery-item-card';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="grocery-item-image" loading="lazy">
+                    <div class="grocery-item-details">
+                        <div class="grocery-item-name">${item.name}</div>
+                        <div class="grocery-item-price">
+                            ₹${item.price}
+                            <span class="grocery-item-original-price">₹${item.originalPrice}</span>
+                            <span class="grocery-item-discount">${item.discount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Popular items data
+        const popularItems = [
+            {
+                image: 'dress/populor/sports-thrilling-shoes-ultra-light-9-hd-black-original-imafy62vcpegxywv.webp',
+                name: 'Sports Thrilling Shoes',
+                price: 2499,
+                originalPrice: 3499,
+                discount: '29% off'
+            },
+            {
+                image: 'dress/populor/hp-business-laptop-240-g9-i5-12th-gen-processor-16gb-500x500.webp',
+                name: 'HP Business Laptop',
+                price: 54999,
+                originalPrice: 64999,
+                discount: '15% off'
+            },
+            {
+                image: 'dress/populor/hd-gustavo-shoes-825788.webp',
+                name: 'Gustavo HD Shoes',
+                price: 1999,
+                originalPrice: 2499,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/populor/gold-chain-5933_640.jpg',
+                name: 'Gold Chain',
+                price: 4999,
+                originalPrice: 5999,
+                discount: '17% off'
+            },
+            {
+                image: 'dress/populor/brown-leather-sandals-product-showcase-r7zqnbq8r6n782wf.png',
+                name: 'Brown Leather Sandals',
+                price: 1799,
+                originalPrice: 2299,
+                discount: '22% off'
+            },
+            {
+                image: 'dress/populor/burger-with-melted-cheese.jpg',
+                name: 'Cheese Burger',
+                price: 149,
+                originalPrice: 199,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/populor/140430115517-06-comfort-foods.jpg',
+                name: 'Comfort Food Special',
+                price: 299,
+                originalPrice: 399,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/populor/images (16).jpeg',
+                name: 'Premium Collection',
+                price: 3999,
+                originalPrice: 4999,
+                discount: '20% off'
+            },
+            {
+                image: 'dress/populor/images (14).jpeg',
+                name: 'Exclusive Bundle',
+                price: 2999,
+                originalPrice: 3999,
+                discount: '25% off'
+            },
+            {
+                image: 'dress/populor/images (13).jpeg',
+                name: 'Special Package',
+                price: 2499,
+                originalPrice: 3299,
+                discount: '24% off'
+            }
+        ];
+
+        function loadPopularCarousel() {
+            const carousel = document.getElementById('popularCarousel');
+            // Create a track div for animation
+            const track = document.createElement('div');
+            track.className = 'popular-carousel-track';
+
+            // Add items twice for seamless looping
+            for (let i = 0; i < 2; i++) {
+                popularItems.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'popular-item-card';
+                    
+                    card.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="popular-item-image" loading="lazy">
+                        <div class="popular-item-details">
+                            <div class="popular-item-name">${item.name}</div>
+                            <div class="popular-item-price">
+                                ₹${item.price}
+                                <span class="popular-item-original-price">₹${item.originalPrice}</span>
+                                <span class="popular-item-discount">${item.discount}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    track.appendChild(card);
+                });
+            }
+
+            carousel.appendChild(track);
+        }
+
+        // Call on page load
+        loadPopularCarousel();
+    </script>
+
+    <script>
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        hamburgerMenu.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Optional: Close sidebar when clicking outside of it (on the main content)
+        mainContent.addEventListener('click', () => {
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Prevent clicks inside sidebar from closing it when clicking on mainContent
+        sidebar.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+
+        // Hide sidebar by default on page load on small screens
+        function hideSidebarOnLoad() {
+            if (window.innerWidth <= 992) {
+                sidebar.classList.remove('open');
+            }
+        }
+
+        // Call hideSidebarOnLoad on page load
+        window.addEventListener('load', hideSidebarOnLoad);
+
+        // Adjust sidebar visibility on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 992) {
+                sidebar.classList.remove('open'); // Ensure sidebar is closed if resized from mobile
+                sidebar.style.left = '0'; // Ensure it's in correct position on large screens
+                sidebar.style.display = 'block'; // Ensure it's visible
+                mainContent.style.marginLeft = '250px'; // Adjust main content margin
+            } else {
+                sidebar.style.left = '-250px'; // Hide sidebar on mobile
+                sidebar.style.display = 'none'; // Hide sidebar on mobile initially
+                mainContent.style.marginLeft = '0'; // No margin on mobile
+            }
+        });
+
+        // Ensure sidebar is hidden on initial mobile load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth <= 992) {
+                 sidebar.style.left = '-250px'; // Hide sidebar on mobile
+                 sidebar.style.display = 'none'; // Hide sidebar on mobile initially
+                 mainContent.style.marginLeft = '0'; // No margin on mobile
+            }
+        });
+    </script>
+</body>
+</html>
