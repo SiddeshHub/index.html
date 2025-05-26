@@ -60,27 +60,31 @@
             gap: 30px; /* Increase gap between flex items */
         }
 
-        /* Left Header Group - Now empty or can be removed if not needed for other elements */
+        /* Left Header Group */
         .left-header-group {
             display: flex;
             align-items: center;
-            gap: 20px; /* Gap between search and cart */
-            /* This group will now be on the left implicitly */
-            order: 1; /* Ensure it stays on the left, though it might be empty */
-            margin-right: auto; /* Push subsequent items to the right */
+            gap: 20px;
+            order: 1;
+            margin-right: auto;
+            margin-left: -100px; /* Increased left margin to move logo further left */
         }
 
-        /* Logo Section */
+        /* Logo Section - Now only contains text */
         .logo-section {
-            text-align: center; /* Center the text */
-            /* Removed order to rely on default flow and margin auto */
-            margin: 0 auto; /* Center the logo */
-            order: 2; /* Place logo second */
+            text-align: center;
+            margin: 0 auto;
+            order: 2;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .logo {
             color: white;
-            font-size: 60px; /* Even larger font size */
+            font-size: 60px;
             font-weight: 600;
             text-decoration: none;
             display: flex;
@@ -89,9 +93,17 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .logo img {
-            height: 35px;
-            margin-right: 12px;
+        .logo span {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .logo-img {
+            height: 100px; /* Increased height */
+            width: 100px; /* Increased width */
+            border-radius: 8px;
+            object-fit: cover;
         }
 
         .logo .explore {
@@ -771,6 +783,23 @@
                 height: 18px;
                 font-size: 10px;
             }
+
+            .logo {
+                font-size: 40px;
+            }
+            
+            .logo span {
+                font-size: 20px;
+            }
+
+            .logo-img {
+                height: 70px; /* Adjusted for tablets */
+                width: 70px;
+            }
+
+            .left-header-group {
+                margin-left: -50px; /* Adjusted for tablets */
+            }
         }
 
         @media (max-width: 576px) {
@@ -780,6 +809,23 @@
 
             .nav-item {
                 padding: 8px;
+            }
+
+            .logo {
+                font-size: 30px;
+            }
+            
+            .logo span {
+                font-size: 18px;
+            }
+
+            .logo-img {
+                height: 25px;
+                width: 25px;
+            }
+
+            .left-header-group {
+                margin-left: -30px; /* Adjusted for mobile */
             }
         }
 
@@ -1070,7 +1116,7 @@
             }
 
             .logo {
-                font-size: 30px; /* Further adjust font size */
+                font-size: 40px; /* Further adjust font size */
             }
 
             .card-icon-button,
@@ -1190,6 +1236,15 @@
             .grocery-item-discount {
                 font-size: 14px;
             }
+
+            .logo-img {
+                height: 30px;
+                width: 30px;
+            }
+
+            .left-header-group {
+                margin-left: -50px; /* Adjusted for tablets */
+            }
         }
 
         @media (max-width: 576px) {
@@ -1203,7 +1258,7 @@
             }
 
             .logo {
-                font-size: 24px; /* Further reduce font size */
+                font-size: 30px; /* Further reduce font size */
             }
 
             .card-icon-button,
@@ -1314,6 +1369,51 @@
             .grocery-item-discount {
                 font-size: 12px;
             }
+
+            .logo-img {
+                height: 25px;
+                width: 25px;
+            }
+
+            .left-header-group {
+                margin-left: -30px; /* Adjusted for mobile */
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .logo {
+                padding-left: 500px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .logo {
+                padding-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 40px;
+                padding-left: 150px;
+            }
+            
+            .logo-img {
+                height: 30px;
+                width: 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo {
+                font-size: 30px;
+                padding-left: 100px;
+            }
+            
+            .logo-img {
+                height: 25px;
+                width: 25px;
+            }
         }
     </style>
 </head>
@@ -1321,15 +1421,17 @@
     <!-- Header/Navbar -->
     <header class="header">
         <div class="nav-container">
-            <!-- Left Header Group - Now empty or can be removed if not needed for other elements -->
+            <!-- Left Header Group - Now contains logo -->
             <div class="left-header-group">
-                
+                <a href="dress/WhatsApp Image 2025-05-26 at 09.52.32_331cdb18.jpg" class="logo">
+                    <img src="dress/WhatsApp Image 2025-05-26 at 09.52.32_331cdb18.jpg" alt="Logo" class="logo-img">
+                </a>
             </div>
 
-            <!-- Logo -->
+            <!-- Logo Section - Now only contains text -->
             <div class="logo-section">
                 <a href="#" class="logo">
-                      <span>All in one shop</span>
+                    <span>Trust Cart</span>
                 </a>
             </div>
 
@@ -2324,13 +2426,7 @@
                 originalPrice: 199,
                 discount: '25% off'
             },
-            {
-                image: 'dress/populor/brown-leather-sandals-product-showcase-r7zqnbq8r6n782wf.png"',
-                name: 'Butter Chicken',
-                price: 299,
-                originalPrice: 399,
-                discount: '25% off'
-            },
+          
             {
                 image: 'dress/food/WhatsApp Image 2025-05-23 at 01.07.32_439636ec.jpg',
                 name: 'Biryani Special',
